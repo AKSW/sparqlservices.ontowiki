@@ -1,0 +1,71 @@
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#>.
+@prefix doap: <http://usefulinc.com/ns/doap#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owconfig: <http://ns.ontowiki.net/SysOnt/ExtensionConfig/> .
+@prefix extension: <http://ns.ontowiki.net/Extensions/> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix event: <http://ns.ontowiki.net/SysOnt/Events/> .
+@prefix : <https://github.com/AKSW/modellist/raw/master/doap.n3#> .
+
+<> foaf:primaryTopic :sparqlservices .
+:sparqlservices a doap:Project ;
+  doap:name "sparqlservices" ;
+  owconfig:privateNamespace <https://github.com/AKSW/sparqlservices.ontowiki/raw/master/doap.n3#> ;
+  owconfig:enabled "true"^^xsd:boolean ;
+  rdfs:label "Sparql Endpoints" ;
+  doap:description "provides a list of pre-configured or user given sparql backends" ;
+  owconfig:authorLabel "Michael Martin" ;
+  doap:maintainer <http://aksw.org> ;
+  owconfig:class "has-contextmenus-block" ;
+  owconfig:hasModule :Default ;
+  owconfig:config :SparqlServicesConfig .
+:Default a owconfig:Module ;
+  rdfs:label "Default" ;
+  owconfig:priority "0" ;
+  owconfig:caching "true"^^xsd:boolean ;
+  owconfig:context "main.sidewindows" .
+:sparqlservices doap:release :v0-1 .
+:v0-1 a doap:Version ;
+  doap:revision "0.1" .
+
+:SparqlServicesConfig a owconfig:Config; 
+  owconfig:id "SparqlServicesConfig";
+    :defaultBackend "endpoint-1" ;
+    :userInputAllowed "true" ; 
+    :discoveryEnabled "false" ;
+  owconfig:config [ 
+    a owconfig:Config; 
+    owconfig:id "backend-list";
+    owconfig:config [
+      a owconfig:Config;
+      owconfig:id "endpoint-1" ;
+      :icon "" ;
+      :label "Virtuoso" ;
+      :address <http://localhost:8890/sparql>
+    ] ;
+    owconfig:config [
+      a owconfig:Config;
+      owconfig:id "endpoint-2" ;
+      :icon "" ;
+      :label "OntoWiki" ;
+      :address <http://localhost/ontowiki/sparql>
+    ]
+  ] ;
+  owconfig:config [
+    a owconfig:Config; 
+    owconfig:id "List of Repository Services";
+    owconfig:config [
+      a owconfig:Config;
+      owconfig:id "service-1" ;
+      :icon "" ;
+      :label "Open Data Portal" ;
+      :address <http://localhost/>
+    ] ;
+    owconfig:config [
+      a owconfig:Config;
+      owconfig:id "service-2" ;
+      :icon "" ;
+      :label "Public Data" ;
+      :address <http://localhost/>
+    ]
+  ] .
