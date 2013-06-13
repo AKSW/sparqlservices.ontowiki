@@ -18,7 +18,8 @@
   doap:maintainer <http://aksw.org> ;
   owconfig:class "has-contextmenus-block" ;
   owconfig:hasModule :Default ;
-  owconfig:config :SparqlServicesConfig .
+  owconfig:config :SparqlServicesConfig ;
+  owconfig:pluginEvent event:onBeforeInitialisingStore .
 :Default a owconfig:Module ;
   rdfs:label "Default" ;
   owconfig:priority "0" ;
@@ -30,42 +31,72 @@
 
 :SparqlServicesConfig a owconfig:Config; 
   owconfig:id "SparqlServicesConfig";
+    rdfs:label "Sparql Endpoints" ;
     :defaultBackend "endpoint-1" ;
     :userInputAllowed "true" ; 
     :discoveryEnabled "false" ;
+    :showServicesModule "true" ;
   owconfig:config [ 
     a owconfig:Config; 
-    owconfig:id "backend-list";
+    owconfig:id "endpoints";
     owconfig:config [
       a owconfig:Config;
       owconfig:id "endpoint-1" ;
       :icon "" ;
-      :label "Virtuoso" ;
+      rdfs:label "Virtuoso" ;
       :address <http://localhost:8890/sparql>
     ] ;
     owconfig:config [
       a owconfig:Config;
       owconfig:id "endpoint-2" ;
       :icon "" ;
-      :label "OntoWiki" ;
-      :address <http://localhost/ontowiki/sparql>
+      rdfs:label "Digital Agenda Data" ;
+      :address <http://digital-agenda-data.eu/data/sparql>
+    ];
+    owconfig:config [
+      a owconfig:Config;
+      owconfig:id "endpoint-3" ;
+      :icon "" ;
+      rdfs:label "AKSW" ;
+      :address <http://aksw.org/sparql>
+    ];
+    owconfig:config [
+      a owconfig:Config;
+      owconfig:id "endpoint-4" ;
+      :icon "" ;
+      rdfs:label "AKSW - Virtuoso" ;
+      :address <http://aksw.org:8890/sparql>
+    ];
+   owconfig:config [
+      a owconfig:Config;
+      owconfig:id "endpoint-5" ;
+      :icon "" ;
+      rdfs:label "LOD2 OntoWiki" ;
+      :address <http://data.lod2.eu/sparql>
+    ];
+   owconfig:config [
+      a owconfig:Config;
+      owconfig:id "endpoint-6" ;
+      :icon "" ;
+      rdfs:label "LOD2 Virtuoso" ;
+      :address <http://data.lod2.eu:8891/sparql>
     ]
   ] ;
   owconfig:config [
     a owconfig:Config; 
-    owconfig:id "List of Repository Services";
+    owconfig:id "repos";
     owconfig:config [
       a owconfig:Config;
       owconfig:id "service-1" ;
       :icon "" ;
-      :label "Open Data Portal" ;
+      rdfs:label "Open Data Portal" ;
       :address <http://localhost/>
     ] ;
     owconfig:config [
       a owconfig:Config;
       owconfig:id "service-2" ;
       :icon "" ;
-      :label "Public Data" ;
+      rdfs:label "Public Data" ;
       :address <http://localhost/>
     ]
   ] .
