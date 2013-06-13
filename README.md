@@ -20,9 +20,13 @@ Usage
 * add further configurations to local config.ini in order to disable AccessControl, QueryCache and Versioning (these functions need a local triple store)
 
   `versioning         = false`
+
   `sysont.enable      = false`
+
   `ac.type            = "none"`
+
   `cache.enable       = false`
+
   `cache.query.enable = false`
 
 * Edit the backend list in the doap file according your needs
