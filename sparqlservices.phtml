@@ -1,0 +1,26 @@
+<?php
+/**
+ * This file is part of the {@link http://ontowiki.net OntoWiki} project.
+ *
+ * @copyright Copyright (c) 2012, {@link http://aksw.org AKSW}
+ * @license http://opensource.org/licenses/gpl-license.php GNU General Public License (GPL)
+ */
+
+/**
+ * OntoWiki sparql services list template
+ */
+
+?>
+<?php if (!empty($this->endpoints)): ?>
+    <ol class="bullets-none separated has-contextmenus-block">
+    	<?php foreach ($this->endpoints as $entry): ?>
+    		<li>
+    			<a class="Model <?php echo $entry['selected'] ?>" href="<?php echo $entry['serviceUrl'] ?>" about="<?php echo $entry['serviceUrl'] ?>">
+    				<?php echo $entry['serviceTitle'] ?>
+    			</a>
+    		</li>
+    	<?php endforeach; ?>
+    </ol>
+<?php else: ?>
+    <p class="messagebox info"><?php echo $this->_('No spyrql endpoints found.') ?></p>
+<?php endif; ?>
