@@ -27,15 +27,29 @@ class SparqlservicesPlugin extends OntoWiki_Plugin
     public function onBeforeInitialisingStore($event)
     {
         $request                    = new OntoWiki_Request();
-        $sparqlServiceRequested     = $request->getParam("serviceUrl");
+        if ($request->getParam("serviceUrl")) {
+            $sparqlServiceRequested     = $request->getParam("serviceUrl");
+        } else if (isset($_SESSION[_OWSESSION]['serviceUrl'])){
+            $sparqlServiceRequested     = $_SESSION[_OWSESSION]['serviceUrl'];
+        } else {
+                return false ;
+        }
+        
         $sparqlService              = "";
+        $valid = (boolean) Zend_Uri::check($sparqlServiceRequested);
+        if (!$valid){
+            var_dump(!$valid);die;
+        }
+        if ($request->getParam("userAddedServiceUrl")) {
+            $_SESSION[_OWSESSION]['insertedEndpoint'] =  $sparqlServiceRequested;
+        }
 
         if (!empty($sparqlServiceRequested)) {
-            $sparqlService                  = $sparqlServiceRequested;
-            $_SESSION['serviceUrl']         = $sparqlServiceRequested;
+            $sparqlService                         = $sparqlServiceRequested;
+            $_SESSION[_OWSESSION]['serviceUrl']    = $sparqlServiceRequested;
         } else {
-            if (!empty($_SESSION['serviceUrl'])) {
-                $sparqlService = $_SESSION['serviceUrl'];
+            if (!empty($_SESSION[_OWSESSION]['serviceUrl'])) {
+                $sparqlService = $_SESSION[_OWSESSION]['serviceUrl'];
             }
         }
 

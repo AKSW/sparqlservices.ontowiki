@@ -2,7 +2,7 @@
 /**
  * This file is part of the {@link http://ontowiki.net OntoWiki} project.
  *
- * @copyright Copyright (c) 2012, {@link http://aksw.org AKSW}
+ * @copyright Copyright (c) 2013, {@link http://aksw.org AKSW}
  * @license http://opensource.org/licenses/gpl-license.php GNU General Public License (GPL)
  */
 
@@ -11,16 +11,22 @@
  */
 
 ?>
-<?php if (!empty($this->endpoints)): ?>
+<h4>Type in Sparql endpoint</h4>
+<form action="<?php echo $this->viewElements['selectAction']?>">
+    <input type="hidden" name="userAddedServiceUrl" value="true">
+    <input name="serviceUrl" type="text" size="30"><input type="submit" value="select">
+</form>
+<h4>Preconfigured endpoints</h4>
+<?php if (!empty($this->viewElements['endpoints'])): ?>
     <ol class="bullets-none separated has-contextmenus-block">
-    	<?php foreach ($this->endpoints as $entry): ?>
-    		<li>
-    			<a class="Model <?php echo $entry['selected'] ?>" href="<?php echo $entry['serviceUrl'] ?>" about="<?php echo $entry['serviceUrl'] ?>">
-    				<?php echo $entry['serviceTitle'] ?>
-    			</a>
-    		</li>
-    	<?php endforeach; ?>
+        <?php foreach ($this->viewElements['endpoints'] as $entry): ?>
+            <li>
+                <a class="Endpoint <?php echo $entry['selected'] ?>" href="<?php echo $entry['serviceUrl'] ?>">
+                    <?php echo $entry['serviceTitle'] ?>
+                </a>
+            </li>
+        <?php endforeach; ?>
     </ol>
 <?php else: ?>
-    <p class="messagebox info"><?php echo $this->_('No spyrql endpoints found.') ?></p>
+    <p class="messagebox info"><?php echo $this->_('No Sparql-Endpoints found.') ?></p>
 <?php endif; ?>
