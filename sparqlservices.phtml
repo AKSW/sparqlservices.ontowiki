@@ -11,11 +11,16 @@
  */
 
 ?>
-<h4>Type in Sparql endpoint</h4>
-<form action="<?php echo $this->viewElements['selectAction']?>">
-    <input type="hidden" name="userAddedServiceUrl" value="true">
-    <input name="serviceUrl" type="text" size="30"><input type="submit" value="select">
-</form>
+
+<?php if (!empty($this->viewElements['userInputAllowed'])): ?>
+    <h4>Type in Sparql endpoint</h4>
+    <form action="<?php echo $this->viewElements['selectAction']?>">
+        <input type="hidden" name="userAddedServiceUrl" value="true">
+        <input name="serviceUrl" type="text" size="30"><input type="submit" value="select">
+    </form>
+<?php endif; ?>
+
+
 <h4>Preconfigured endpoints</h4>
 <?php if (!empty($this->viewElements['endpoints'])): ?>
     <ol class="bullets-none separated has-contextmenus-block">

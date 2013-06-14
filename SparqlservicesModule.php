@@ -20,11 +20,13 @@ class SparqlservicesModule extends OntoWiki_Module
     protected $_config;
     protected $_owApp;
     protected $_urlbase;
+    protected $_storeConfig;
 
     public function init()
     {
         $this->session = new Zend_Session_Namespace(_OWSESSION);
         $this->_urlbase = $this->_config->urlBase;
+        $this->_storeConfig = $this->_config->store;
 
         //Config object is overwritten Its a Hack in order to get it working
         $this->_config = $this->_privateConfig->get('SparqlServicesConfig');
@@ -68,12 +70,24 @@ class SparqlservicesModule extends OntoWiki_Module
 
         //create list on the basis of configured endpoints
         $configuredEndpoints = $this->_config->get('endpoints');
-        
+
+        //Have a look if there is a Default Graph configured in OntoWiki configuration
+        if (isset($this->_storeConfig->sparql) && isset($this->_storeConfig->sparql->serviceUrl)) {
+            $defaultEndpoint = new Zend_Config(
+                array(
+                    'address' => $this->_storeConfig->sparql->serviceUrl,
+                    'title' => "Default endpoint"
+                )
+            );
+            $configuredEndpoints->defaultEndpoint = $defaultEndpoint;
+        }
+
+        //Have a look if there is an user inserted graph in the session
         if (isset($_SESSION[_OWSESSION]['insertedEndpoint'])) {
             $insertedEndpoint = new Zend_Config(
                 array(
                     'address' => $_SESSION[_OWSESSION]['insertedEndpoint'],
-                    'serviceTitle' => $_SESSION[_OWSESSION]['insertedEndpoint']
+                    'title' => $_SESSION[_OWSESSION]['insertedEndpoint']
                 )
             );
             $configuredEndpoints->insertedEndpoint = $insertedEndpoint;
@@ -83,7 +97,7 @@ class SparqlservicesModule extends OntoWiki_Module
                 $endpoint = array();
                 $addressUrl = $this->_urlbase . 'sparqlservices/select/?serviceUrl=' . urlencode($entry->address);
                 $endpoint['serviceUrl']     = $addressUrl;
- #               $endpoint['icon']           = $entry->icon;
+                //$endpoint['icon']           = $entry->icon;
                 if (!empty($entry->title)) {
                     $endpoint['serviceTitle']   = $entry->title;
                 } else {
@@ -101,7 +115,12 @@ class SparqlservicesModule extends OntoWiki_Module
                 $endpoints[$key] = $endpoint;
             }
         }
-        $viewElements["selectAction"] = $this->_urlbase . 'sparqlservices/select/';
+
+        $userInput = (boolean)$this->_config->userInputAllowed;
+        if ($userInput) {
+            $viewElements["userInputAllowed"] = true;
+            $viewElements["selectAction"] = $this->_urlbase . 'sparqlservices/select/';
+        }
         $viewElements["endpoints"] = $endpoints;
 
         $content = $this->render('sparqlservices', $viewElements, 'viewElements');

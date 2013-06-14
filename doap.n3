@@ -32,10 +32,9 @@
 :SparqlServicesConfig a owconfig:Config; 
   owconfig:id "SparqlServicesConfig";
     rdfs:label "Sparql Endpoints" ;
-    :defaultBackend "endpoint-1" ;
-    :userInputAllowed "true" ; 
-    :discoveryEnabled "false" ;
-    :showServicesModule "true" ;
+    :userInputAllowed "true"^^xsd:boolean ; 
+    :discoveryEnabled "false"^^xsd:boolean ;
+    :showServicesModule "true"^^xsd:boolean ;
   owconfig:config [ 
     a owconfig:Config; 
     owconfig:id "endpoints";
@@ -53,33 +52,33 @@
       rdfs:label "Digital Agenda Data" ;
       :address <http://digital-agenda-data.eu/data/sparql>
     ];
-    owconfig:config [
+   owconfig:config [
       a owconfig:Config;
       owconfig:id "endpoint-3" ;
       :icon "" ;
-      rdfs:label "AKSW" ;
-      :address <http://aksw.org/sparql>
+      rdfs:label "LODStats" ;
+      :address <http://stats.lod2.eu/sparql>
     ];
-    owconfig:config [
+   owconfig:config [
       a owconfig:Config;
       owconfig:id "endpoint-4" ;
       :icon "" ;
-      rdfs:label "AKSW - Virtuoso" ;
-      :address <http://aksw.org:8890/sparql>
+      rdfs:label "LOD2 Data Endpoint" ;
+      :address <http://data.lod2.eu:8891/sparql>
     ];
    owconfig:config [
       a owconfig:Config;
       owconfig:id "endpoint-5" ;
       :icon "" ;
-      rdfs:label "LOD2 OntoWiki" ;
-      :address <http://data.lod2.eu/sparql>
+      rdfs:label "DBpedia" ;
+      :address <http://dbpedia.org/sparql>
     ];
    owconfig:config [
       a owconfig:Config;
       owconfig:id "endpoint-6" ;
       :icon "" ;
-      rdfs:label "LOD2 Virtuoso" ;
-      :address <http://data.lod2.eu:8891/sparql>
+      rdfs:label "OpenLink LOD Cache" ;
+      :address <http://lod.openlinksw.com/sparql>
     ]
   ] ;
   owconfig:config [
