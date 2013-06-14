@@ -37,15 +37,20 @@ Usage
 
   `cache.query.enable = false`
 
-* Edit the backend list in the doap file according your needs
+* Edit the backend list in the doap file according your needs. 
+  In the following an example is shown illustrating that you are able to setup the SPARQL endpoint URI and a respective label, that will be used in the list.
 
   `owconfig:config [
+
       a owconfig:Config;
+
       owconfig:id "endpoint-5" ;
-      :icon "" ;
+
       rdfs:label "DBpedia" ;
+
       :address <http://dbpedia.org/sparql>
-    ];`
+
+   ];`
 
 
 * Toggle visualization of the SparqlSelection Module using the following option in the doap file:
