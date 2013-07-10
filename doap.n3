@@ -13,12 +13,14 @@
   owconfig:privateNamespace <https://github.com/AKSW/sparqlservices.ontowiki/raw/master/doap.n3#> ;
   owconfig:enabled "true"^^xsd:boolean ;
   rdfs:label "Sparql Endpoints" ;
-  doap:description "provides a list of pre-configured or user given sparql backends" ;
+  doap:description "provides a list of pre-configured or user given sparql backends, that can be switched. As a constraint you have to enable the sparql backend." ;
   owconfig:authorLabel "Michael Martin" ;
+    owconfig:authorLabel "Konrad Abicht" ;
   doap:maintainer <http://aksw.org> ;
   owconfig:class "has-contextmenus-block" ;
   owconfig:hasModule :Default ;
   owconfig:config :SparqlServicesConfig ;
+  owconfig:templates "public/templates" ;
   owconfig:pluginEvent event:onBeforeInitialisingStore .
 :Default a owconfig:Module ;
   rdfs:label "Default" ;
@@ -42,43 +44,45 @@
       a owconfig:Config;
       owconfig:id "endpoint-1" ;
       :icon "" ;
-      rdfs:label "Virtuoso" ;
+      rdfs:label "Local Virtuoso" ;
       :address <http://localhost:8890/sparql>
     ] ;
-    owconfig:config [
+   owconfig:config [
       a owconfig:Config;
       owconfig:id "endpoint-2" ;
-      :icon "" ;
-      rdfs:label "Digital Agenda Data" ;
-      :address <http://digital-agenda-data.eu/data/sparql>
-    ];
-   owconfig:config [
-      a owconfig:Config;
-      owconfig:id "endpoint-3" ;
-      :icon "" ;
-      rdfs:label "LODStats" ;
-      :address <http://stats.lod2.eu/sparql>
-    ];
-   owconfig:config [
-      a owconfig:Config;
-      owconfig:id "endpoint-4" ;
       :icon "" ;
       rdfs:label "LOD2 Data Endpoint" ;
       :address <http://data.lod2.eu:8891/sparql>
     ];
    owconfig:config [
       a owconfig:Config;
-      owconfig:id "endpoint-5" ;
+      owconfig:id "endpoint-3" ;
       :icon "" ;
       rdfs:label "DBpedia" ;
       :address <http://dbpedia.org/sparql>
     ];
    owconfig:config [
       a owconfig:Config;
-      owconfig:id "endpoint-6" ;
+      owconfig:id "endpoint-4" ;
       :icon "" ;
       rdfs:label "OpenLink LOD Cache" ;
       :address <http://lod.openlinksw.com/sparql>
+    ];
+    owconfig:config [
+      a owconfig:Config;
+      owconfig:id "endpoint-5" ;
+      :icon "" ;
+      rdfs:label "Digital Agenda Data" ;
+      :address <http://digital-agenda-data.eu/data/sparql> ;
+      owconfig:config [
+        a owconfig:Config;
+        owconfig:id "models" ;
+        owconfig:config [
+          a owconfig:Config;
+          owconfig:id "model-1" ;
+          :modelUri <http://semantic.digital-agenda-data.eu/CubeViz>
+        ]
+      ]
     ]
   ] ;
   owconfig:config [

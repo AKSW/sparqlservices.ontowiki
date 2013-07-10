@@ -40,49 +40,41 @@ class SparqlservicesModule extends OntoWiki_Module
      */
     public function shouldShow()
     {
-        if ($this->_config->showServicesModule) {
+        if ($this->_config->showServicesModule && ($this->_storeConfig->backend == "sparql")) {
             return true;
         }
         return false;
     }
 
     /**
-     * Returns the menu of the module
-     * Two elements Local Configured elements and discovered ones
-     * @return string
-     */
-    //public function getMenu()
-    //{
-    //    $viewMenu = new OntoWiki_Menu();
-    //    $viewMenu->setEntry('Show Configured Sparql endpoints', array('class' => 'show'));
-    //    $viewMenu->setEntry('Show Discovered Sparql endpoints', array('class' => 'show'));
-    //    $mainMenu = new OntoWiki_Menu();
-    //    $mainMenu->setEntry('Source', $viewMenu);
-    //    return $mainMenu;
-    //}
-
-    /**
-     * Returns the content for the model list.
+     * Returns the content for the module
      */
     public function getContents()
     {
         $endpoints = array();
 
-        //create list on the basis of configured endpoints
+        // create list on the basis of configured endpoints
         $configuredEndpoints = $this->_config->get('endpoints');
 
-        //Have a look if there is a Default Graph configured in OntoWiki configuration
+        // have a look if there is a Default Graph configured in OntoWiki configuration
         if (isset($this->_storeConfig->sparql) && isset($this->_storeConfig->sparql->serviceUrl)) {
-            $defaultEndpoint = new Zend_Config(
-                array(
-                    'address' => $this->_storeConfig->sparql->serviceUrl,
-                    'title' => "Default endpoint"
-                )
-            );
-            $configuredEndpoints->defaultEndpoint = $defaultEndpoint;
+            $defaultEndpoint = false;
+            foreach ($configuredEndpoints as $item) {
+                if ($item->address == $this->_storeConfig->sparql->serviceUrl) {
+                    $defaultEndpoint = true;
+                }
+            }
+            if ($defaultEndpoint == false) {
+                $configuredEndpoints->defaultEndpoint = new Zend_Config(
+                    array(
+                        'address' => $this->_storeConfig->sparql->serviceUrl,
+                        'title' => "Default endpoint"
+                    )
+                );
+            }
         }
 
-        //Have a look if there is an user inserted graph in the session
+        // Have a look if there is an user inserted graph in the session
         if (isset($_SESSION[_OWSESSION]['insertedEndpoint'])) {
             $insertedEndpoint = new Zend_Config(
                 array(
@@ -92,21 +84,22 @@ class SparqlservicesModule extends OntoWiki_Module
             );
             $configuredEndpoints->insertedEndpoint = $insertedEndpoint;
         }
-        if ($configuredEndpoints) {
+        if (0 < count($configuredEndpoints)) {
             foreach ($configuredEndpoints as $key => $entry) {
                 $endpoint = array();
                 $addressUrl = $this->_urlbase . 'sparqlservices/select/?serviceUrl=' . urlencode($entry->address);
                 $endpoint['serviceUrl']     = $addressUrl;
-                //$endpoint['icon']           = $entry->icon;
-                if (!empty($entry->title)) {
+
+                if (false == empty($entry->title)) {
                     $endpoint['serviceTitle']   = $entry->title;
                 } else {
                     $endpoint['serviceTitle']   = $entry->address;
                 }
-                //if selected then mark it as selected
 
+                // if selected then mark it as selected
                 $endpoint['selected'] = '';
-                if (isset($this->_owApp->erfurt->getConfig()->store->sparql->serviceUrl)) {
+
+                if (true === isset($this->_owApp->erfurt->getConfig()->store->sparql->serviceUrl)) {
                     $selectedEndpoint = $this->_owApp->erfurt->getConfig()->store->sparql->serviceUrl;
                     if ($selectedEndpoint == $entry->address) {
                         $endpoint['selected'] = 'selected';
@@ -116,16 +109,25 @@ class SparqlservicesModule extends OntoWiki_Module
             }
         }
 
-        $userInput = (boolean)$this->_config->userInputAllowed;
-        if ($userInput) {
+        if (true == (boolean)$this->_config->userInputAllowed) {
             $viewElements["userInputAllowed"] = true;
             $viewElements["selectAction"] = $this->_urlbase . 'sparqlservices/select/';
         }
+
         $viewElements["endpoints"] = $endpoints;
 
-        $content = $this->render('sparqlservices', $viewElements, 'viewElements');
+        /**
+         * Add javascript and css file
+         */
+        $basePath = $this->view->basePath = $this->_urlbase . 'extensions/sparqlservices/';
 
-        return $content;
+        $this->view->headScript()->appendFile($basePath .'public/javascript/leftSidebar.js', 'text/javascript');
+        $this->view->headLink()->prependStylesheet($basePath .'public/css/main.css');
+
+        $this->view->isModelSet = '' != $this->_request->getParam('m', '') ? true : false;
+        $this->view->urlbase = $this->_urlbase;
+
+        return $this->render('sparqlservices', $viewElements, 'viewElements');
     }
 
     public function getTitle()

@@ -1,0 +1,44 @@
+<?php
+/**
+ * This file is part of the {@link http://ontowiki.net OntoWiki} project.
+ *
+ * @copyright Copyright (c) 2013, {@link http://aksw.org AKSW}
+ * @license http://opensource.org/licenses/gpl-license.php GNU General Public License (GPL)
+ */
+
+/**
+ * OntoWiki sparql services list template
+ */
+?>
+
+<div class="smallHeadline">
+    Select a datasource (SPARQL endpoint):</div>
+<?php if (!empty($this->viewElements['endpoints'])): ?>
+    <select id="sparqlServ-selectPreConfEndpoint">
+        <option value="<?php echo $this->urlbase; ?>">- Please select -</option>
+        <?php foreach ($this->viewElements['endpoints'] as $entry): ?>
+            <option <?php echo "selected" == $entry['selected'] ? 'selected="selected" id="sparqlServ-selectedOption"' : ''; ?>
+                    value="<?php echo $entry['serviceUrl'] ?>">
+                <?php echo $entry['serviceTitle'] ?>
+            </option>
+        <?php endforeach; ?>
+    </select>
+<?php else: ?>
+    <p class="messagebox info"><?php echo $this->_('No Sparql-Endpoints found.') ?></p>
+<?php endif; ?>
+
+<br/>
+<br/>
+
+<?php if (false == empty($this->viewElements['userInputAllowed'])): ?>
+    <div id="sparqlServ-formContainer">
+        <div class="smallHeadline">or add a data source (SPARQL endpoint)</div>
+        <form action="<?php echo $this->viewElements['selectAction']?>">
+            <input name="userAddedServiceUrl" type="hidden" value="true">
+            <input id="sparqlServ-userDefUri" name="serviceUrl" type="text" value="http://">
+            <input id="sparqlServ-formUserDefUri-Btn" type="submit" value="use">
+            <br/>
+            <small>&nbsp;Example: http://fts.publicdata.eu/sparql</small>
+        </form>
+    </div>
+<?php endif; ?>
